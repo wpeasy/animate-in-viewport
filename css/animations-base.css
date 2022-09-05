@@ -7,13 +7,13 @@ prefix all names with "vpa-" for consistency
 Rotate and Fade In
 */
 /* RESET IN EDITOR */
-body.elementor-editor-active .vpa-rotate-left-fade-in > *:first-of-type{
+body.elementor-editor-active .vpa-rotate-left-fade-in > *:first-child{
     opacity: 1;
     transform: scale(1);
 }
 
 /* vars */
-.vpa-rotate-left-fade-in > *:first-of-type{
+.vpa-rotate-left-fade-in > *:first-child{
     --delay: 0s;
     --opacity-start: 0;
     --opacity-end: 1;
@@ -25,25 +25,25 @@ body.elementor-editor-active .vpa-rotate-left-fade-in > *:first-of-type{
     --transition-timing: ease-out;
 }
 /* Starting point */
-.vpa-rotate-left-fade-in > *:first-of-type{
+.vpa-rotate-left-fade-in > *:first-child{
     transform: scale(var(--scale-start)) rotate(var(--rotate-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
 
 /* Ending point */
-.vpa-rotate-left-fade-in.wpg-reanimate.in-view > *:first-of-type{
+.vpa-rotate-left-fade-in.wpg-reanimate.in-view > *:first-child{
     transform: scale(1) rotate(0deg);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
 }
 
-body.elementor-editor-active .vpa-rotate-right-fade-in > *:first-of-type{
+body.elementor-editor-active .vpa-rotate-right-fade-in > *:first-child{
     opacity: 1;
     transform: scale(1);
 }
 
-.vpa-rotate-right-fade-in > *:first-of-type{
+.vpa-rotate-right-fade-in > *:first-child{
     --delay: 0s;
     --opacity-start: 0;
     --opacity-end: 1;
@@ -55,14 +55,14 @@ body.elementor-editor-active .vpa-rotate-right-fade-in > *:first-of-type{
     --transition-timing: ease-out;
 }
 /* Starting point */
-.vpa-rotate-right-fade-in > *:first-of-type{
+.vpa-rotate-right-fade-in > *:first-child{
     transform: scale(var(--scale-start)) rotate(var(--rotate-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
 
 /* Ending point */
-.vpa-rotate-right-fade-in.wpg-reanimate.in-view > *:first-of-type{
+.vpa-rotate-right-fade-in.wpg-reanimate.in-view > *:first-child{
     transform: scale(1) rotate(0deg);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
@@ -85,18 +85,18 @@ Big  Zoom
 }
 
 /*Editor reset */
-body.elementor-editor-active .vpa-big-zoom-in > *:first-of-type{
+body.elementor-editor-active .vpa-big-zoom-in > *:first-child{
     opacity: 1;
     transform: scale(1);
 }
 /*start*/
-.vpa-big-zoom-in > *:first-of-type{
+.vpa-big-zoom-in > *:first-child{
     transform: scale(var(--scale-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
 /*end*/
-.vpa-big-zoom-in.wpg-reanimate.in-view > *:first-of-type{
+.vpa-big-zoom-in.wpg-reanimate.in-view > *:first-child{
     transform: scale(var(--scale-end));
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);

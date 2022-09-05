@@ -10,7 +10,7 @@ The Tracked element having the "data-event-prefix|popup" set the Widget->Setting
         });
 
         w.addEventListener('popup_track-view/out', e => {
-            /* Elementor popups dont\'t have teh same "Close" function as Open.
+            /* Elementor popups dont\'t have the same "Close" function as Open.
                 closePopup(settings,event)  closes the popup from the event.target which is automatically set
                 by the Event dispatch. Elementor looks up the DOM for the popup, therefore, teh event must trigger from
                 within the popups element tree.
