@@ -1,5 +1,5 @@
-;((w, d) => {
-    const DEBUG = false; //Enable for console logging
+;((w,d)=>{
+    const DEBUG = true; //Enable for console logging
 
     let targetElementCollection;
     const targetElementSelector = '.wpg-reanimate';
@@ -8,13 +8,13 @@
     const defaultBottom = '-20%';
     const trackViewEventName = 'track-view';
 
-    w.addEventListener('DOMContentLoaded', () => {
+    w.addEventListener('DOMContentLoaded', ()=>{
         init();
     })
 
-    const init = () => {
+    const init = ()=>{
         targetElementCollection = d.querySelectorAll(targetElementSelector);
-        targetElementCollection.forEach(el => {
+        targetElementCollection.forEach(el=>{
             initElement(el);
         });
     }
@@ -24,9 +24,7 @@
         @param data Intersection Observer entry
     */
     const dispatch = (type, data) => {
-        if (DEBUG) {
-            console.log('Dispatch:', type)
-        }
+        if(DEBUG) {console.log('Dispatch:', type)}
         const event = new CustomEvent(
             type,
             {
@@ -38,8 +36,12 @@
     }
 
     const initElement = element => {
-        const top = element.dataset.ioTop ? element.dataset.ioTop : defaultTop;
-        const bottom = element.dataset.ioBottom ? element.dataset.ioBottom : defaultBottom;
+
+        /* -----------
+        Observer and dispatcher setup
+        */
+        const top = element.dataset.ioTop? element.dataset.ioTop : defaultTop;
+        const bottom = element.dataset.ioBottom? element.dataset.ioBottom : defaultBottom;
         const rootMargin = top + ' 0px ' + bottom + ' 0px';
 
         /*
@@ -55,7 +57,7 @@
 
             This enables very specific listeners for selected elements
         */
-        const eventPrefix = element.dataset.eventPrefix ? element.dataset.eventPrefix.trim() + '_' : '';
+        const eventPrefix = element.dataset.eventPrefix? element.dataset.eventPrefix + '_' : '';
         const inViewEventName = eventPrefix + trackViewEventName + '/in';
         const outViewEventName = eventPrefix + trackViewEventName + '/out';
 
@@ -65,22 +67,30 @@
             threshold: 0.0001
         }
 
-        let observer = new IntersectionObserver((entries, observer) => {
+        let observer = new IntersectionObserver((entries, observer)=>{
             entries.forEach((entry) => {
                 /*console.log(entry);*/
-                if (entry.isIntersecting) {
+                if(entry.isIntersecting){
                     dispatch(inViewEventName, entry);
                     element.classList.add(inViewClass);
-                } else {
+                }else{
                     dispatch(outViewEventName, entry);
                     element.classList.remove(inViewClass);
                 }
             });
         }, options);
         observer.observe(element);
+
+        /* -----------
+        Copy style attributed to forst child to work with the new CSS targeting of the first child
+        */
+        const firstChild = element.querySelector('*:first-child');
+        const style = element.getAttribute('style');
+        firstChild.setAttribute('style', style);
+
     }
 
-    if (DEBUG) {
+    if(DEBUG){
         w.addEventListener("track-view/in", e => {
             console.log('in:', e.detail);
         });
@@ -89,4 +99,4 @@
             console.log('out:', e.detail);
         });
     }
-})(window, document);
+})(window,document);
