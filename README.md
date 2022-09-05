@@ -1,5 +1,6 @@
 # animate-in-viewport
 Current code is based on Elementor. It could easily be adjusted for other environments 
+
 An Elementor event is used for initialisation and the device type is detected using a data attribute on body, added by Elementor
 
 Other than that, the code is generic. Also, it does not have any dependencies.
