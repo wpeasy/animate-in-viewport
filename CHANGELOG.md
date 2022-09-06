@@ -1,4 +1,9 @@
 ## v0.0.4
+### Fixes
+
+- Fixed: Animations on first screen paint showing partial "Out" animation. Adjusted sample CSS
+
+## v0.0.4
 ### Changes
 This update is to treat uninitialized elements differently. We want the opacity to be 0 by default until the element has been initialised.
 

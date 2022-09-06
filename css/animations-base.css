@@ -4,21 +4,27 @@ prefix all names with "vpa-" for consistency
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /*General hide animation items until initialised */
-.wpg-reanimate:not(.vpa-initalized){
-    opacity:0;
-}
-/** For Elementor Editor */
-body.elementor-editor-active .wpg-reanimate:not(.vpa-initalized){
-    opacity:1;
+.wpg-reanimate:not(.vpa-initalized) {
+    opacity: 0;
 }
 
+/** For Elementor Editor, unset all opacity and transformations */
+body.elementor-editor-active .wpg-reanimate:not(.vpa-initalized) {
+    opacity: 1;
+    transform: none;
+    clip-path: unset;
+}
 
-/**##############
+/*#########################
+Transition Classes
+ */
+
+/**-------------------
 Rotate and Fade In
 */
 
 /* vars */
-.vpa-rotate-left-fade-in> *:first-child{
+.vpa-rotate-left-fade-in > *:first-child {
     --delay: 0s;
     --opacity-start: 0;
     --opacity-end: 1;
@@ -29,21 +35,22 @@ Rotate and Fade In
     --transform-duration-out: 0.5s;
     --transition-timing: ease-out;
 }
+
 /* Starting point */
-.vpa-rotate-left-fade-in.vpa-initalized > *:first-child{
+.vpa-rotate-left-fade-in > *:first-child {
     transform: scale(var(--scale-start)) rotate(var(--rotate-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
 
 /* Ending point */
-.vpa-rotate-left-fade-in.vpa-initalized.in-view > *:first-child{
+.vpa-rotate-left-fade-in.vpa-initalized.in-view > *:first-child {
     transform: scale(1) rotate(0deg);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
 }
 
-.vpa-rotate-right-fade-in > *:first-child{
+.vpa-rotate-right-fade-in > *:first-child {
     --delay: 0s;
     --opacity-start: 0;
     --opacity-end: 1;
@@ -54,25 +61,27 @@ Rotate and Fade In
     --transform-duration-out: 1s;
     --transition-timing: ease-out;
 }
+
 /* Starting point */
-.vpa-rotate-right-fade-in.vpa-initalized > *:first-child{
+.vpa-rotate-right-fade-in > *:first-child {
     transform: scale(var(--scale-start)) rotate(var(--rotate-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
 
 /* Ending point */
-.vpa-rotate-right-fade-in.vpa-initalized.in-view > *:first-child{
+.vpa-rotate-right-fade-in.vpa-initalized.in-view > *:first-child {
     transform: scale(1) rotate(0deg);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
 }
 
-/**##############
-Big  Zoom
+/**-------------------
+Zooming
 */
+
 /* vars */
-.vpa-big-zoom-in{
+.vpa-big-zoom-in {
     --delay: 0s;
     --opacity-start: 0;
     --opacity-end: 1;
@@ -86,24 +95,26 @@ Big  Zoom
 
 
 /*start*/
-.vpa-big-zoom-in.vpa-initalized > *:first-child{
+.vpa-big-zoom-in > *:first-child {
     transform: scale(var(--scale-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
+
 /*end*/
-.vpa-big-zoom-in.vpa-initalized.in-view > *:first-child{
+.vpa-big-zoom-in.vpa-initalized.in-view > *:first-child {
     transform: scale(var(--scale-end));
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
 }
 
-/**##############
-Clip Reveal
+/**-------------------
+Clip Reveals
 */
+
 /* right to left */
 
-.vpa-reveal-clip-to-left{
+.vpa-reveal-clip-to-left {
     --delay: 0s;
     --opacity-start: 0.1;
     --opacity-end: 1;
@@ -114,20 +125,21 @@ Clip Reveal
     --transform-duration-out: 1s;
     --transition-timing: ease-out;
 }
-.vpa-reveal-clip-to-left.vpa-initalized > *:first-child{
-    clip-path: polygon(var(--percent-start) var(--percent-end), 100% var(--percent-end), 100% 100%, var(--percent-start)  100%);
+
+.vpa-reveal-clip-to-left > *:first-child {
+    clip-path: polygon(var(--percent-start) var(--percent-end), 100% var(--percent-end), 100% 100%, var(--percent-start) 100%);
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration), clip-path var(--transform-duration-out), transform var(--transform-duration-out) var(--transition-timing);
 }
 
-.vpa-reveal-clip-to-left.vpa-initalized.in-view > *:first-child{
+.vpa-reveal-clip-to-left.vpa-initalized.in-view > *:first-child {
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), clip-path var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-out) var(--transition-timing);;
 }
 
 /* left to right */
-.vpa-reveal-clip-to-right{
+.vpa-reveal-clip-to-right {
     --delay: 0s;
     --opacity-start: 0;
     --opacity-end: 1;
@@ -138,23 +150,24 @@ Clip Reveal
     --transform-duration-out: 1s;
     --transition-timing: ease-out;
 }
-.vpa-reveal-clip-to-right.vpa-initalized > *:first-child{
-    clip-path: polygon(0% 0% , var(--percent-start) 0% , var(--percent-start) 100%, 0% 100%);
+
+.vpa-reveal-clip-to-right > *:first-child {
+    clip-path: polygon(0% 0%, var(--percent-start) 0%, var(--percent-start) 100%, 0% 100%);
     opacity: 0.1;
     transition: opacity var(--opacity-duration), clip-path var(--transform-duration-out), transform var(--transform-duration-out) var(--transition-timing);;
 }
 
-.vpa-reveal-clip-to-right.vpa-initalized.in-view > *:first-child{
+.vpa-reveal-clip-to-right.vpa-initalized.in-view > *:first-child {
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), clip-path var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-out) var(--transition-timing);
 }
 
 
-/**##############
-Shadow standoff
+/**-------------------
+Shadows
 */
-.vpa-shadow-standoff{
+.vpa-shadow-standoff {
     --delay: 0;
     --distance: 30px;
     --transform-duration-in: 1s;
@@ -163,24 +176,30 @@ Shadow standoff
     --neg-dist: calc(-1 * var(--distance));
     --half-dist: calc(distance / 2);
     --box-shadow-off: 0 0 3px #00000033;
-    --box-shadow-on:  var(--half-dist) var(--half-dist) var(--half-dist) #00000066;
+    --box-shadow-on: var(--half-dist) var(--half-dist) var(--half-dist) #00000066;
 }
-.vpa-shadow-standoff.vpa-initalized {
+
+.vpa-shadow-standoff {
     box-shadow: var(--box-shadow-off);
     transform: translateX(0) translateY(0);
     transition: box-shadow var(--transform-duration-out), transform var(--transform-duration-out);
 }
-.vpa-shadow-standoff.vpa-initalized.in-view{
+
+.vpa-shadow-standoff.vpa-initalized.in-view {
     box-shadow: var(--box-shadow-on);
     transform: translateX(var(--neg-dist)) translateY(var(--neg-dist));
     transition: box-shadow var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
 }
 
-/**##############
-Sample Keyframe Animation
-*/
 
-.vpa-keyframe-sample{
+/*#########################
+Keyframe Classes
+ */
+
+/**-------------------
+Example
+*/
+.vpa-keyframe-sample {
     --delay: 0;
     --distance: 100px;
     --transform-duration-in: 1s;
@@ -189,12 +208,14 @@ Sample Keyframe Animation
     --opacity-start: 0;
     --opacity-end: 1;
 }
-.vpa-keyframe-sample.vpa-initalized .my-target{
+
+.vpa-keyframe-sample .my-target {
     animation: vpa-keyframe-sample-out;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
 }
-.vpa-keyframe-sample.vpa-initalized.in-view .my-target{
+
+.vpa-keyframe-sample.vpa-initalized.in-view .my-target {
     animation: vpa-keyframe-sample-in;
     animation-delay: var(--delay);
     animation-fill-mode: forwards;
@@ -202,26 +223,28 @@ Sample Keyframe Animation
     animation-duration: var(--transform-duration-in);
     animation-timing-function: var(--transition-timing);
 }
-@keyframes vpa-keyframe-sample-in{
-    0%{
+
+@keyframes vpa-keyframe-sample-in {
+    0% {
         opacity: var(--opacity-start);
         transform: translateX(var(--distance)) translateY(var(--distance));
     }
-    50%{
+    50% {
         opacity: var(--opacity-end);
         transform: translateX(0px) translateY(var(--distance));
     }
-    100%{
+    100% {
         opacity: var(--opacity-end);
         transform: translateX(0px) translateY(0px);
     }
 }
-@keyframes vpa-keyframe-sample-out{
-    0%{
+
+@keyframes vpa-keyframe-sample-out {
+    0% {
         opacity: 1;
     }
-    100%{
-        opacity:0;
+    100% {
+        opacity: 0;
         transform: translateY(-60px);
     }
 }
