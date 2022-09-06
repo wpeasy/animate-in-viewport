@@ -1,4 +1,4 @@
-## v0.0.4
+## v0.0.5
 ### Fixes
 
 - Fixed: Animations on first screen paint showing partial "Out" animation. Adjusted sample CSS
