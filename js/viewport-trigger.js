@@ -1,5 +1,5 @@
 ;((w, d) => {
-    const DEBUG = true; //Enable for console logging
+    const DEBUG = false; //Enable for console logging
     const body = document.body;
 
     let targetElementCollection;
@@ -7,11 +7,16 @@
     let deviceMode; //init() gets the device mode from the body element. This is Elementor Specific.
 
     const targetElementSelector = '.wpg-reanimate';
+    const initializedClass = 'vpa-initalized';
     const inViewClass = 'in-view';
     const outOfViewClass = 'out-of-view';
     const defaultTop = '-20%';
     const defaultBottom = '-20%';
     const trackViewEventName = 'track-view';
+
+    w.addEventListener('DOMContentLoaded', ()=>{
+        targetElementCollection = d.querySelectorAll(targetElementSelector);
+    })
 
     w.addEventListener('elementor/frontend/init', () => {
         init();
@@ -19,7 +24,6 @@
 
     const init = () => {
         if(DEBUG) { console.info('### Track Viewport INIT ###')}
-        targetElementCollection = d.querySelectorAll(targetElementSelector);
         targetElementCollection.forEach(el => {
             initElement(el);
         });
@@ -128,6 +132,8 @@
         const firstChild = element.querySelector('*:first-child');
         const style = element.getAttribute('style');
         firstChild.setAttribute('style', style);
+
+        element.classList.add(initializedClass);
     }
 
     if (DEBUG) {

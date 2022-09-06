@@ -3,17 +3,22 @@ Animation classes for "Animate in Viewport"
 prefix all names with "vpa-" for consistency
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+/*General hide animation items until initialised */
+.wpg-reanimate:not(.vpa-initalized){
+    opacity:0;
+}
+/** For Elementor Editor */
+body.elementor-editor-active .wpg-reanimate:not(.vpa-initalized){
+    opacity:1;
+}
+
+
 /**##############
 Rotate and Fade In
 */
-/* RESET IN EDITOR */
-body.elementor-editor-active .vpa-rotate-left-fade-in > *:first-child{
-    opacity: 1;
-    transform: scale(1);
-}
 
 /* vars */
-.vpa-rotate-left-fade-in > *:first-child{
+.vpa-rotate-left-fade-in> *:first-child{
     --delay: 0s;
     --opacity-start: 0;
     --opacity-end: 1;
@@ -25,22 +30,17 @@ body.elementor-editor-active .vpa-rotate-left-fade-in > *:first-child{
     --transition-timing: ease-out;
 }
 /* Starting point */
-.vpa-rotate-left-fade-in > *:first-child{
+.vpa-rotate-left-fade-in.vpa-initalized > *:first-child{
     transform: scale(var(--scale-start)) rotate(var(--rotate-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
 
 /* Ending point */
-.vpa-rotate-left-fade-in.wpg-reanimate.in-view > *:first-child{
+.vpa-rotate-left-fade-in.vpa-initalized.in-view > *:first-child{
     transform: scale(1) rotate(0deg);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
-}
-
-body.elementor-editor-active .vpa-rotate-right-fade-in > *:first-child{
-    opacity: 1;
-    transform: scale(1);
 }
 
 .vpa-rotate-right-fade-in > *:first-child{
@@ -55,14 +55,14 @@ body.elementor-editor-active .vpa-rotate-right-fade-in > *:first-child{
     --transition-timing: ease-out;
 }
 /* Starting point */
-.vpa-rotate-right-fade-in > *:first-child{
+.vpa-rotate-right-fade-in.vpa-initalized > *:first-child{
     transform: scale(var(--scale-start)) rotate(var(--rotate-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
 
 /* Ending point */
-.vpa-rotate-right-fade-in.wpg-reanimate.in-view > *:first-child{
+.vpa-rotate-right-fade-in.vpa-initalized.in-view > *:first-child{
     transform: scale(1) rotate(0deg);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
@@ -84,19 +84,15 @@ Big  Zoom
     --transition-timing: ease-out;
 }
 
-/*Editor reset */
-body.elementor-editor-active .vpa-big-zoom-in > *:first-child{
-    opacity: 1;
-    transform: scale(1);
-}
+
 /*start*/
-.vpa-big-zoom-in > *:first-child{
+.vpa-big-zoom-in.vpa-initalized > *:first-child{
     transform: scale(var(--scale-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
 /*end*/
-.vpa-big-zoom-in.wpg-reanimate.in-view > *:first-child{
+.vpa-big-zoom-in.vpa-initalized.in-view > *:first-child{
     transform: scale(var(--scale-end));
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
@@ -118,16 +114,16 @@ Clip Reveal
     --transform-duration-out: 1s;
     --transition-timing: ease-out;
 }
-.vpa-reveal-clip-to-left .elementor-widget-container{
+.vpa-reveal-clip-to-left.vpa-initalized > *:first-child{
     clip-path: polygon(var(--percent-start) var(--percent-end), 100% var(--percent-end), 100% 100%, var(--percent-start)  100%);
     opacity: var(--opacity-start);
-    transition: opacity var(--opacity-duration), clip-path var(--transform-duration-out);
+    transition: opacity var(--opacity-duration), clip-path var(--transform-duration-out), transform var(--transform-duration-out) var(--transition-timing);
 }
 
-.vpa-reveal-clip-to-left.wpg-reanimate.in-view .elementor-widget-container{
+.vpa-reveal-clip-to-left.vpa-initalized.in-view > *:first-child{
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     opacity: var(--opacity-end);
-    transition: opacity var(--opacity-duration) ease var(--delay), clip-path var(--transform-duration-in) var(--transition-timing) var(--delay);
+    transition: opacity var(--opacity-duration) ease var(--delay), clip-path var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-out) var(--transition-timing);;
 }
 
 /* left to right */
@@ -142,16 +138,16 @@ Clip Reveal
     --transform-duration-out: 1s;
     --transition-timing: ease-out;
 }
-.vpa-reveal-clip-to-right .elementor-widget-container{
+.vpa-reveal-clip-to-right.vpa-initalized > *:first-child{
     clip-path: polygon(0% 0% , var(--percent-start) 0% , var(--percent-start) 100%, 0% 100%);
     opacity: 0.1;
-    transition: opacity var(--opacity-duration), clip-path var(--transform-duration-out);
+    transition: opacity var(--opacity-duration), clip-path var(--transform-duration-out), transform var(--transform-duration-out) var(--transition-timing);;
 }
 
-.vpa-reveal-clip-to-right.wpg-reanimate.in-view .elementor-widget-container{
+.vpa-reveal-clip-to-right.vpa-initalized.in-view > *:first-child{
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     opacity: var(--opacity-end);
-    transition: opacity var(--opacity-duration) ease var(--delay), clip-path var(--transform-duration-in) var(--transition-timing) var(--delay);
+    transition: opacity var(--opacity-duration) ease var(--delay), clip-path var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-out) var(--transition-timing);
 }
 
 
@@ -169,12 +165,12 @@ Shadow standoff
     --box-shadow-off: 0 0 3px #00000033;
     --box-shadow-on:  var(--half-dist) var(--half-dist) var(--half-dist) #00000066;
 }
-.vpa-shadow-standoff{
+.vpa-shadow-standoff.vpa-initalized {
     box-shadow: var(--box-shadow-off);
     transform: translateX(0) translateY(0);
     transition: box-shadow var(--transform-duration-out), transform var(--transform-duration-out);
 }
-.vpa-shadow-standoff.in-view{
+.vpa-shadow-standoff.vpa-initalized.in-view{
     box-shadow: var(--box-shadow-on);
     transform: translateX(var(--neg-dist)) translateY(var(--neg-dist));
     transition: box-shadow var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
@@ -183,10 +179,7 @@ Shadow standoff
 /**##############
 Sample Keyframe Animation
 */
-body.elementor-editor-active .vpa-keyframe-sample .my-target{
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-}
+
 .vpa-keyframe-sample{
     --delay: 0;
     --distance: 100px;
@@ -196,12 +189,12 @@ body.elementor-editor-active .vpa-keyframe-sample .my-target{
     --opacity-start: 0;
     --opacity-end: 1;
 }
-.vpa-keyframe-sample.wpg-reanimate .my-target{
+.vpa-keyframe-sample.vpa-initalized .my-target{
     animation: vpa-keyframe-sample-out;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
 }
-.vpa-keyframe-sample.wpg-reanimate.in-view .my-target{
+.vpa-keyframe-sample.vpa-initalized.in-view .my-target{
     animation: vpa-keyframe-sample-in;
     animation-delay: var(--delay);
     animation-fill-mode: forwards;
