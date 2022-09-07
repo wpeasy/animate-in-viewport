@@ -1,3 +1,10 @@
+## v0.0.6
+### Additions
+
+- Added animation class 
+  - vpa-highlighter
+  - vpa-box-reveal
+
 ## v0.0.5
 ### Fixes
 

@@ -1,6 +1,9 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Animation classes for "Animate in Viewport"
 prefix all names with "vpa-" for consistency
+
+For any classes like :first-child :before :after - These may affect teh Elementor Editor
+Prefix thode rules with body:not(.elementor-editor-active) to exclude from the Editor
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /*General hide animation items until initialised */
@@ -161,6 +164,83 @@ Clip Reveals
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), clip-path var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-out) var(--transition-timing);
+}
+
+
+/**-------------------
+Highlighters
+*/
+.vpa-highlighter > *:first-child{
+    --delay: 0s;
+    --box-shadow-in: 2px 2px 6px #00000055;
+    --box-shadow-out: none;
+    --bg-color: rgba(255,0,0,.6);
+    --border-radius: 5px;
+    --padding: 10px;
+    --rotation: 1deg;
+    --display: inline-block;
+    --transform-duration-in: .6s;
+    --transform-duration-out: 0.3s;
+    --transition-timing: ease-out;
+    isolation: isolate; /* reset for z-index */
+}
+body:not(.elementor-editor-active) .vpa-highlighter > *:first-child{
+    display: var(--display);
+    padding: var(--padding);
+    position: relative;
+}
+
+body:not(.elementor-editor-active) .vpa-highlighter > *:first-child:before{
+    content: '';
+    position: absolute;
+    top:0;
+    left:0;
+    width: 0%;
+    height: 100%;
+    background: var(--bg-color);
+    transform: rotate(var(--rotation));
+    box-shadow: var(--box-shadow-out);
+    transition:  width var(--transform-duration-out) var(--transition-timing), box-shadow 0.1s;
+    z-index: -1;
+    border-radius: var(--border-radius);
+}
+
+body:not(.elementor-editor-active) .vpa-highlighter.vpa-initalized.in-view  > *:first-child:before{
+    width: 100%;
+    box-shadow: var(--box-shadow-in);
+    transition: width var(--transform-duration-in) var(--transition-timing) var(--delay);
+}
+
+/**-------------------
+Background Box Reveal
+*/
+body:not(.elementor-editor-active) .vpa-box-reveal > *:first-child{
+    --delay: 0s;
+    --bg-color: rgba(255,0,0,.6);
+    --border-radius: 5px;
+    --padding: 10px;
+    --rotation: 1deg;
+    --display: inline-block;
+    --transform-duration-in: .6s;
+    --transform-duration-out: 0.3s;
+    --transition-timing: ease-out;
+    isolation: isolate; /* reset for z-index */
+}
+body:not(.elementor-editor-active) .vpa-box-reveal > *:first-child{
+    display: var(--display);
+    padding: var(--padding);
+    position: relative;
+    border-radius: var(--border-radius);
+    background: var(--bg-color);
+    transform: rotate(var(--rotation));
+    clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
+    transition: clip-path var(--transform-duration-out) var(--transition-timing);
+}
+
+
+.vpa-box-reveal.vpa-initalized.in-view  > *:first-child{
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    transition: clip-path var(--transform-duration-out) var(--transition-timing) var(--delay);
 }
 
 
