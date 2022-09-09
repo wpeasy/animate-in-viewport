@@ -166,6 +166,47 @@ Clip Reveals
     transition: opacity var(--opacity-duration) ease var(--delay), clip-path var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-out) var(--transition-timing);
 }
 
+/**-------------------
+Underlines
+*/
+.vpa-underline > *:first-child{
+    --delay: 0s;
+    --bg-color: rgba(255,0,0,.6);
+    --border-radius: 3px;
+    --height: 0.3rem;
+    --bottom: 0;
+    --rotation: 1deg;
+    --display: inline-block;
+    --transform-duration-in: .6s;
+    --transform-duration-out: 0.3s;
+    --transition-timing: ease-out;
+    isolation: isolate; /* reset for z-index */
+}
+body:not(.elementor-editor-active) .vpa-underline > *:first-child{
+    display: var(--display);
+    padding: var(--padding);
+    position: relative;
+}
+
+body:not(.elementor-editor-active) .vpa-underline > *:first-child:before{
+    content: '';
+    position: absolute;
+    bottom: var(--bottom);
+    left:0;
+    width: 0%;
+    border-radius: var(--border-radius);
+    height: var(--height);
+    background: var(--bg-color);
+    transform: rotate(var(--rotation));
+    transition:  width var(--transform-duration-out) var(--transition-timing);
+    z-index: -1;
+
+}
+
+body:not(.elementor-editor-active) .vpa-underline.vpa-initalized.in-view  > *:first-child:before{
+    width: 100%;
+    transition: width var(--transform-duration-in) var(--transition-timing) var(--delay);
+}
 
 /**-------------------
 Highlighters
@@ -206,6 +247,7 @@ body:not(.elementor-editor-active) .vpa-highlighter > *:first-child:before{
 }
 
 body:not(.elementor-editor-active) .vpa-highlighter.vpa-initalized.in-view  > *:first-child:before{
+    --box-shadow-delay: cals(var(--delay) + var(--transform-duration-in));
     width: 100%;
     box-shadow: var(--box-shadow-in);
     transition: width var(--transform-duration-in) var(--transition-timing) var(--delay);

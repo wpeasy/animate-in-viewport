@@ -1,6 +1,13 @@
 ## v0.0.6
 ### Additions
 
+- Added animation class
+  - vpa-underline
+
+
+## v0.0.6
+### Additions
+
 - Added animation class 
   - vpa-highlighter
   - vpa-box-reveal
