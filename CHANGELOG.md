@@ -1,4 +1,4 @@
-## v0.07
+## v0.08
 ### Changes
 
 - Changed class names for tracking
