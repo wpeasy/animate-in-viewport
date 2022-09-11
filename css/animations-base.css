@@ -7,12 +7,12 @@ Prefix thode rules with body:not(.elementor-editor-active) to exclude from the E
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /*General hide animation items until initialised */
-.wpg-reanimate:not(.vpa-initalized) {
+.vpa-track:not(.vpa-initalized),  .vpa-no-track:not(.vpa-initalized){
     opacity: 0;
 }
 
 /** For Elementor Editor, unset all opacity and transformations */
-body.elementor-editor-active .wpg-reanimate:not(.vpa-initalized) {
+body.elementor-editor-active .vpa-track:not(.vpa-initalized), body.elementor-editor-active .vpa-no-track:not(.vpa-initalized)  {
     opacity: 1;
     transform: none;
     clip-path: unset;
@@ -247,7 +247,6 @@ body:not(.elementor-editor-active) .vpa-highlighter > *:first-child:before{
 }
 
 body:not(.elementor-editor-active) .vpa-highlighter.vpa-initalized.in-view  > *:first-child:before{
-    --box-shadow-delay: cals(var(--delay) + var(--transform-duration-in));
     width: 100%;
     box-shadow: var(--box-shadow-in);
     transition: width var(--transform-duration-in) var(--transition-timing) var(--delay);

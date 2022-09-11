@@ -14,11 +14,24 @@ https://youtu.be/0HQ8DaamOVI
 **NOTE: My code had changed quite a bit since these videos. They need tobe redone but still demonstrate the usage.** 
 
 ## Usage
-### Element Tracking
-- Add the class 'wpg-reanimate' to any element to track
+### Element Viewport Tracking
+- Add the class 'vpa-track' to any element to track
 
 This will by default have an active viewport of -20% from the top and bottom of the visible display.
 When any part of the element is within this range it is considered to be "in View", otherwise it is "Out of View"
+
+### Non-Element Viewport Tracking
+- Add the class 'vpa-no-track' to any element to track
+
+All the following settings and attributes are applied. The element is not tracked in the viewport. 
+Trigger the state by calling public methods.
+e.g.
+<pre><code>
+const vpa = window._VPA;
+const el = document.getElementById('testElement');
+vpa.setInView(el); //to play in animation
+vpa.setOutOfView(el); //to play out animation
+</code></pre>
 
 ### Customisation
 #### Data Attributes 

@@ -1,12 +1,14 @@
 ;((w, d) => {
+
     const DEBUG = false; //Enable for console logging
     const body = document.body;
 
-    let targetElementCollection;
+    let trackingElementCollection, nonTrackingElementCollection;
     let observerCollection = []; //used to register observers so we can disconnect on window resize
     let deviceMode; //init() gets the device mode from the body element. This is Elementor Specific.
 
-    const targetElementSelector = '.wpg-reanimate';
+    const trackElementSelector = '.vpa-track';
+    const nonTrackElementSelector = '.vpa-no-track';
     const initializedClass = 'vpa-initalized';
     const inViewClass = 'in-view';
     const outOfViewClass = 'out-of-view';
@@ -14,37 +16,110 @@
     const defaultBottom = '-20%';
     const trackViewEventName = 'track-view';
 
-    w.addEventListener('DOMContentLoaded', ()=>{
-        targetElementCollection = d.querySelectorAll(targetElementSelector);
+    w.addEventListener('DOMContentLoaded', () => {
+        trackingElementCollection = d.querySelectorAll(trackElementSelector);
+        nonTrackingElementCollection = d.querySelectorAll(nonTrackElementSelector);
     })
 
     w.addEventListener('elementor/frontend/init', () => {
         init();
     })
 
-    const init = () => {
-        if(DEBUG) { console.info('### Track Viewport INIT ###')}
-        targetElementCollection.forEach(el => {
-            initElement(el);
-        });
-    }
-
     //Clear observers on resize and reinitialise
-    w.addEventListener('resize', ()=>{
-        if(DEBUG) { console.info('### Track Viewport RESIZE ###')}
-        observerCollection.forEach( o =>{
+    w.addEventListener('resize', () => {
+        if (DEBUG) {
+            console.info('### Track Viewport RESIZE ###')
+        }
+        observerCollection.forEach(o => {
             o.disconnect();
         });
         observerCollection = [];
-        init();
+        deviceMode = body.dataset.elementorDeviceMode;
+        trackElements();
     })
+
+    const init = () => {
+        if (DEBUG) {
+            console.info('### Track Viewport INIT ###')
+        }
+        deviceMode = body.dataset.elementorDeviceMode;
+        parseSettingsToElementData();
+        trackElements();
+    }
+
+
+    const parseSettingsToElementData = () => {
+        if (DEBUG) {
+            console.info('### Track Viewport PARSE SETTINGS ###')
+        }
+        const allElements = [...trackingElementCollection, ...nonTrackingElementCollection];
+        allElements.forEach(element => {
+            const conditions = {
+                mobile: {
+                    css: !element.hasAttribute('data-mobile-disable-css'),
+                    events: !element.hasAttribute('data-mobile-disable-events')
+                },
+                tablet: {
+                    css: !element.hasAttribute('data-tablet-disable-css'),
+                    events: !element.hasAttribute('data-tablet-disable-events')
+                },
+                desktop: {
+                    css: !element.hasAttribute('data-desktop-disable-css'),
+                    events: !element.hasAttribute('data-desktop-disable-events')
+                }
+            }
+
+            /*
+                Generic event names to dispatch.
+                With no Prefix:
+                "track-view/in"
+                "track-view/out"
+
+                If the tracked element has a data-prefix attribute use that + '_'
+                e.g. if [data-event-prefix="custom"] results in the names
+                "custom_track-view/in"
+                "custom_track-view/out"
+
+                This enables very specific listeners for selected elements
+            */
+            const eventPrefix = element.dataset.eventPrefix ? element.dataset.eventPrefix + '_' : '';
+            const inViewEventName = eventPrefix + trackViewEventName + '/in';
+            const outViewEventName = eventPrefix + trackViewEventName + '/out';
+
+            //Store my settings on the element
+            const settings = {
+                conditions: conditions,
+                eventPrefix: eventPrefix,
+                inViewEventName: inViewEventName,
+                outViewEventName: outViewEventName
+            }
+            element.dataset.vpaSettings = JSON.stringify(settings);
+
+            /* -----------
+            Copy style attributed to first child to work with the new CSS targeting of the first child
+            */
+            const firstChild = element.querySelector('*:first-child');
+            const style = element.getAttribute('style');
+            firstChild.setAttribute('style', style);
+
+            element.classList.add(initializedClass);
+        })
+    }
+
+    const trackElements = () => {
+        trackingElementCollection.forEach(el => {
+            trackElement(el);
+        });
+    }
 
     /*
         @param type Name of the event
         @param data Intersection Observer entry
     */
     const dispatch = (type, entry) => {
-        if (DEBUG) { console.log('Dispatch:', type) }
+        if (DEBUG) {
+            console.log('Dispatch:', type)
+        }
         const event = new CustomEvent(
             type,
             {
@@ -54,50 +129,39 @@
         w.dispatchEvent(event);
     }
 
-    const initElement = element => {
-        /*
-        Set condition flags from data Attributes
-        */
-        const conditions = {
-            mobile :{
-                css: !element.hasAttribute('data-mobile-disable-css'),
-                events: !element.hasAttribute('data-mobile-disable-events')
-            },
-            tablet : {
-                css: !element.hasAttribute('data-tablet-disable-css'),
-                events: !element.hasAttribute('data-tablet-disable-events')
-            },
-            desktop : {
-                css: !element.hasAttribute('data-desktop-disable-css'),
-                events: !element.hasAttribute('data-desktop-disable-events')
-            }
+    const setInView = (element, entry) => {
+        const settings = JSON.parse(element.dataset.vpaSettings);
+        const {conditions, eventPrefix, inViewEventName, outViewEventName} = settings;
+        if (conditions[deviceMode].events) {
+            dispatch(inViewEventName, entry);
+        }
+        if (conditions[deviceMode].css) {
+            element.classList.add(inViewClass);
+            element.classList.remove(outOfViewClass);
         }
 
-        deviceMode = body.dataset.elementorDeviceMode;
+    }
 
+    const setOutOfView = (element, entry) => {
+        const settings = JSON.parse(element.dataset.vpaSettings);
+        const {conditions, eventPrefix, inViewEventName, outViewEventName} = settings;
+        if (conditions[deviceMode].events) {
+            dispatch(outViewEventName, entry);
+        }
+        if (conditions[deviceMode].css) {
+            element.classList.remove(inViewClass);
+            element.classList.add(outOfViewClass);
+        }
+
+    }
+
+    const trackElement = element => {
         /* -----------
         Observer and dispatcher setup
         */
         const top = element.dataset.ioTop ? element.dataset.ioTop : defaultTop;
         const bottom = element.dataset.ioBottom ? element.dataset.ioBottom : defaultBottom;
         const rootMargin = top + ' 0px ' + bottom + ' 0px';
-
-        /*
-            Generic event names to dispatch.
-            With no Prefix:
-            "track-view/in"
-            "track-view/out"
-
-            If the tracked element has a data-prefix attribute use that + '_'
-            e.g. if [data-event-prefix="custom"] results in the names
-            "custom_track-view/in"
-            "custom_track-view/out"
-
-            This enables very specific listeners for selected elements
-        */
-        const eventPrefix = element.dataset.eventPrefix ? element.dataset.eventPrefix + '_' : '';
-        const inViewEventName = eventPrefix + trackViewEventName + '/in';
-        const outViewEventName = eventPrefix + trackViewEventName + '/out';
 
         let options = {
             root: null,
@@ -109,31 +173,21 @@
             entries.forEach((entry) => {
                 /*console.log(entry);*/
                 if (entry.isIntersecting) {
-                    if(conditions[deviceMode].events) { dispatch(inViewEventName, entry); }
-                    if(conditions[deviceMode].css) {
-                        element.classList.add(inViewClass);
-                        element.classList.remove(outOfViewClass);
-                    }
+                    setInView(element, entry);
                 } else {
-                    if(conditions[deviceMode].events) { dispatch(outViewEventName, entry); }
-                    if(conditions[deviceMode].css) {
-                        element.classList.remove(inViewClass);
-                        element.classList.add(outOfViewClass);
-                    }
+                    setOutOfView(element, entry);
                 }
             });
         }, options);
         observer.observe(element);
         observerCollection.push(observer);
 
-        /* -----------
-        Copy style attributed to first child to work with the new CSS targeting of the first child
-        */
-        const firstChild = element.querySelector('*:first-child');
-        const style = element.getAttribute('style');
-        firstChild.setAttribute('style', style);
+    }
 
-        element.classList.add(initializedClass);
+    //public methods
+    w._VPA = {
+        setInView: setInView,
+        setOutOfView: setOutOfView
     }
 
     if (DEBUG) {

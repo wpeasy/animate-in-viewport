@@ -1,3 +1,17 @@
+## v0.07
+### Changes
+
+- Changed class names for tracking
+  - vpa-track - For items that will be tracked
+  - vpa-no-track - for items that will not be tracked
+
+### Additions
+
+- Added class for non tracked items. This is so teh same animation classes and attributes can be used, triggered manually instead of by Viewport tracking.
+- Added public object on Window "_VPA" which exposes two methods
+  - setInView(DOMElement)
+  - setOutOfView(DOMElement)
+
 ## v0.0.7
 ### Additions
 
