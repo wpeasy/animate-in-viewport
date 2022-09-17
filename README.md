@@ -1,8 +1,9 @@
 # animate-in-viewport
-Current code is based on Elementor. It could easily be adjusted for other environments 
+Current code is based on Elementor and Bricks. It could easily be adjusted for other environments 
 
-An Elementor event is used for initialisation and the device type is detected using a data attribute on body, added by Elementor
+With Elementor, an event is used for initialisation and the device type is detected using a data attribute on body, added by Elementor
 
+With Bricks, breakpoint.css sets a body.content to a value based on the screen width. breakpoint.js defines a function that reads this value
 Other than that, the code is generic. Also, it does not have any dependencies.
 
 Example Viewport animations
@@ -38,6 +39,8 @@ vpa.setOutOfView(el); //to play out animation
 
 For Elementor, use Settings->Advanced > "Attributes". Separate the attribute and value with a | (pipe).
 E.g. data-io-top:200px
+
+For Bricks, use Style -> Attributes
 
 - data-io-top
   - Sets the top of viewport to trigger. Must be PX or %
@@ -98,4 +101,4 @@ detail: entry
 }
 );
 `
-The "type" is teh Event Name, "entry" is the IntersectionObserver entry property from the callback
+The "type" is the Event Name, "entry" is the IntersectionObserver entry property from the callback

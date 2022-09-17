@@ -1,4 +1,10 @@
-## v0.08
+## v0.0.9
+### Changes
+- Moved Elementor code to the folder "elementor"
+### Additions
+- Added modified code in "bricks" folder.
+
+## v0.0.8
 ### Changes
 
 - Changed class names for tracking

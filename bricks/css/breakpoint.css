@@ -1,0 +1,19 @@
+/* See https://gomakethings.com/the-easy-way-to-manage-css-breakpoints-in-javascript/ */
+body:before {
+    content: "mobile";
+    display: none;
+    visibility: hidden;
+}
+
+@media (min-width: 768px) {
+    body:before {
+        content: "tablet";
+    }
+}
+
+@media (min-width: 1025px) {
+    body:before {
+        content: "desktop";
+    }
+}
+
