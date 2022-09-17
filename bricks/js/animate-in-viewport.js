@@ -34,7 +34,7 @@ NOTE: Requires Breakpoint CSS and Breakpoint JS
             o.disconnect();
         });
         observerCollection = [];
-        deviceMode = w._WPG.getBreakpointName();
+        deviceMode = w._WPG.breakpoints.getBreakpointName();
         trackElements();
     })
 
@@ -120,9 +120,7 @@ NOTE: Requires Breakpoint CSS and Breakpoint JS
     }
 
     const setInView = (element, entry) => {
-
         const settings = JSON.parse(element.dataset.vpaSettings);
-        console.log(settings);
         const {conditions, eventPrefix, inViewEventName, outViewEventName} = settings;
         if (conditions[deviceMode].events) {
             dispatch(inViewEventName, entry);
@@ -180,7 +178,7 @@ NOTE: Requires Breakpoint CSS and Breakpoint JS
         if (DEBUG) {
             console.info('### Track Viewport INIT ###')
         }
-        deviceMode = w._WPG.getBreakpointName();
+        deviceMode = w._WPG.breakpoints.getBreakpointName();
         parseSettingsToElementData();
         trackElements();
     }

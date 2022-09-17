@@ -11,5 +11,7 @@ NOTE: Requires Breakpoint CSS
 
     if(w._WPG === undefined) {w._WPG = {}}
 
-    w._WPG.getBreakpointName = getBreakpointName;
+    w._WPG.breakpoints = {
+        getBreakpointName: getBreakpointName
+    }
 })(window)
