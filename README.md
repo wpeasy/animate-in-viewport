@@ -6,11 +6,15 @@ With Elementor, an event is used for initialisation and the device type is detec
 With Bricks, breakpoint.css sets a body.content to a value based on the screen width. breakpoint.js defines a function that reads this value
 Other than that, the code is generic. Also, it does not have any dependencies.
 
+#### Elementor
 Example Viewport animations
 See https://youtu.be/lMDtCbgBSYo
 
 Example with dispatched JS Events:
 https://youtu.be/0HQ8DaamOVI
+
+#### Bricks
+Example: https://youtu.be/O6jr_ueA164
 
 **NOTE: My code had changed quite a bit since these videos. They need tobe redone but still demonstrate the usage.** 
 
@@ -28,7 +32,7 @@ All the following settings and attributes are applied. The element is not tracke
 Trigger the state by calling public methods.
 e.g.
 <pre><code>
-const vpa = window._VPA;
+const vpa = window._VPA.viewportAnimation;
 const el = document.getElementById('testElement');
 vpa.setInView(el); //to play in animation
 vpa.setOutOfView(el); //to play out animation
