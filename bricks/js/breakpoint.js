@@ -6,7 +6,7 @@ NOTE: Requires Breakpoint CSS
     Gets the breakpoint name set by the CSS "Breakpoint CSS"
     */
     const getBreakpointName = ()=>{
-        return window.getComputedStyle(document.body, ':before').content.replace(/\"/g, '')
+        return w.getComputedStyle(document.body, ':before').content.replace(/\"/g, '')
     }
 
     if(w._WPG === undefined) {w._WPG = {}}
@@ -14,4 +14,6 @@ NOTE: Requires Breakpoint CSS
     w._WPG.breakpoints = {
         getBreakpointName: getBreakpointName
     }
+
+    /* window._WPG.breakpoints.getBreakpointName(); */
 })(window)

@@ -71,7 +71,7 @@ NOTE: Requires Breakpoint CSS and Breakpoint JS
                 "track-view/in"
                 "track-view/out"
 
-                If the tracked element has a data-prefix attribute use that + '_'
+                If the tracked element has a data-event-prefix attribute use that + '_'
                 e.g. if [data-event-prefix="custom"] results in the names
                 "custom_track-view/in"
                 "custom_track-view/out"
@@ -96,7 +96,7 @@ NOTE: Requires Breakpoint CSS and Breakpoint JS
             */
             const firstChild = element.querySelector('*:first-child');
             const style = element.getAttribute('style');
-            firstChild.setAttribute('style', style);
+            if(style){ firstChild.setAttribute('style', style) };
 
             element.classList.add(initializedClass);
         })
@@ -107,9 +107,7 @@ NOTE: Requires Breakpoint CSS and Breakpoint JS
         @param data Intersection Observer entry
     */
     const dispatch = (type, entry) => {
-        if (DEBUG) {
-            console.log('Dispatch:', type)
-        }
+        if (DEBUG) { console.log('Dispatch:', type) }
         const event = new CustomEvent(
             type,
             {
@@ -156,7 +154,7 @@ NOTE: Requires Breakpoint CSS and Breakpoint JS
         let options = {
             root: null,
             rootMargin: rootMargin,
-            threshold: 0.0001
+            threshold: 0.00001
         }
 
         let observer = new IntersectionObserver((entries, observer) => {
@@ -171,7 +169,6 @@ NOTE: Requires Breakpoint CSS and Breakpoint JS
         }, options);
         observer.observe(element);
         observerCollection.push(observer);
-
     }
 
     const init = () => {
@@ -184,10 +181,12 @@ NOTE: Requires Breakpoint CSS and Breakpoint JS
     }
 
     //public methods
-    w._VPA = {
+    if(w._WPG === undefined) {w._WPG = {}}
+    w._WPG.viewportAnimation = {
         setInView: setInView,
         setOutOfView: setOutOfView
     }
+
 
     if (DEBUG) {
         w.addEventListener("track-view/in", e => {
