@@ -2,8 +2,8 @@
 Animation classes for "Animate in Viewport"
 prefix all names with "vpa-" for consistency
 
-For any classes like :first-child :before :after - These may affect teh Bricks Editor
-Prefix thode rules with body.bricks-is-frontend to exclude from the Editor
+For any classes like :first-child :before :after - These may affect teh Elementor Editor
+Prefix thode rules with body:not(.elementor-editor-active) to exclude from the Editor
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /*General hide animation items until initialised */
@@ -11,69 +11,80 @@ Prefix thode rules with body.bricks-is-frontend to exclude from the Editor
     opacity: 0;
 }
 
-/** For Bricks Editor, unset all opacity and transformations */
-body:not(.bricks-is-frontend) .vpa-track:not(.vpa-initalized), body:not(.bricks-is-frontend) .vpa-no-track:not(.vpa-initalized)  {
+/** For Elementor Editor, unset all opacity and transformations */
+body.elementor-editor-active .vpa-track:not(.vpa-initalized), body.elementor-editor-active .vpa-no-track:not(.vpa-initalized)  {
     opacity: 1;
     transform: none;
     clip-path: unset;
 }
 
-/*############
-Common variables
-These may be overriden by any animation class
-*/
 .vpa-track, .vpa-no-track{
-    --delay: 0s;
-    --opacity-start: 0;
-    --opacity-end: 1;
-    --opacity-duration: 0.5s;
-    --transform-duration-in: 0.5s;
-    --transform-duration-out: 1s;
-    --transition-timing: ease-out;
+    --out-delay: 0s;
+    --in-delay: 0s;
+
+    --out-rotation: 0deg;
+    --in-rotation: 0deg;
+    --out-x-distance: 0;
+    --in-x-distance: 0;
+    --out-y-distance: 0;
+    --in-y-distance: 0;
+    --out-skew: 0;
+    --in-skew: 0;
+    --out-x-scale: 1;
+    --in-x-scale: 1;
+    --out-y-scale: 1;
+    --in-y-scale: 1;
+
+    --out-opacity: 0;
+    --in-opacity: 1;
+    --out-opacity-duration: 0.5s;
+    --in-opacity-duration: 0.5s;
+    --out-opacity-timing: ease-in;
+    --in-opacity-timing: ease-out;
+
+    --out-transform-duration: 1s;
+    --in-transform-duration: 0.5s;
+    --out-transition-timing: ease-out;
+    --in-transition-timing: ease-in;
 }
 
+.vpa-track, .vpa-no-track{
+    transform: translateX(var(--out-x-distance)) translateY(var(--out-y-distance)) rotate(var(--out-rotation)) skew(var(--out-skew)) scaleX(var(--out-x-scale)) scaleY(var(--out-y-scale));
+    opacity: var(--out-opacity);
+    transition: opacity var(--out-opacity-duration) var(--out-opacity-timing) var(--out-delay), transform var(--out-transform-duration) var(--out-transition-timing) var(--out-delay);
+}
+.vpa-track.in-view > *:first-child , .vpa-track.in-view > *:first-child{
+    transform: translateX(var(--in-x-distance)) translateY(var(--in-y-distance)) rotate(var(--in-rotation)) skew(var(--in-skew)) scaleX(var(--in-x-scale)) scaleY(var(--in-y-scale));
+    opacity: var(--in-opacity);
+    transition: opacity var(--in-opacity-duration) var(--in-opacity-timing) var(--in-delay), transform var(--in-transform-duration) var(--in-transition-timing) var(--in-delay);
+}
 /*#########################
 Transition Classes
  */
-
 /**-------------------
-Simple
+SIMPLE
 */
 /* vars */
-.vpa-fade-in-y > *:first-child {
-    --distance: 30px;
+.vpa-slide-fade > *:first-child {
+    --out-y-distance: 30px;
+}
+
+
+/* vars */
+.vpa-rotate > *:first-child {
+    --out-y-rotate: 8deg;
+    --in-y-rotate: 0deg;
+    --transform-origin: 0 0;
 }
 
 /* Starting point */
-body.bricks-is-frontend .vpa-fade-in-y  > *:first-child {
-    transform: translateY(var(--distance));
-    opacity: var(--opacity-start);
-    transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
+.vpa-rotate > *:first-child {
+    transform-origin: var(--transform-origin);
 }
 
 /* Ending point */
-body.bricks-is-frontend  .vpa-fade-in-y.in-view > *:first-child {
-    transform: translateY(0);
-    opacity: var(--opacity-end);
-    transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
-}
+.vpa-rotate.in-view > *:first-child {
 
-.vpa-fade-in-x > *:first-child {
-    --distance: 30px;
-}
-
-/* Starting point */
-body.bricks-is-frontend .vpa-fade-in-x  > *:first-child {
-    transform: translateX(var(--distance));
-    opacity: var(--opacity-start);
-    transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
-}
-
-/* Ending point */
-body.bricks-is-frontend  .vpa-fade-in-x.in-view > *:first-child {
-    transform: translateX(0);
-    opacity: var(--opacity-end);
-    transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
 }
 
 /**-------------------
@@ -87,33 +98,40 @@ Rotate and Fade In
 }
 
 /* Starting point */
-body.bricks-is-frontend .vpa-rotate-left-fade-in > *:first-child {
+.vpa-rotate-left-fade-in > *:first-child {
     transform: scale(var(--scale-start)) rotate(var(--rotate-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
 
 /* Ending point */
-body.bricks-is-frontend  .vpa-rotate-left-fade-in.vpa-initalized.in-view > *:first-child {
+.vpa-rotate-left-fade-in.vpa-initalized.in-view > *:first-child {
     transform: scale(1) rotate(0deg);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
 }
 
-body.bricks-is-frontend .vpa-rotate-right-fade-in > *:first-child {
+.vpa-rotate-right-fade-in > *:first-child {
+    --delay: 0s;
+    --opacity-start: 0;
+    --opacity-end: 1;
+    --opacity-duration: 0.5s;
     --scale-start: 0.5;
     --rotate-start: 8deg;
+    --transform-duration-in: 0.5s;
+    --transform-duration-out: 1s;
+    --transition-timing: ease-out;
 }
 
 /* Starting point */
-body.bricks-is-frontend .vpa-rotate-right-fade-in > *:first-child {
+.vpa-rotate-right-fade-in > *:first-child {
     transform: scale(var(--scale-start)) rotate(var(--rotate-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
 
 /* Ending point */
-body.bricks-is-frontend .vpa-rotate-right-fade-in.vpa-initalized.in-view > *:first-child {
+.vpa-rotate-right-fade-in.vpa-initalized.in-view > *:first-child {
     transform: scale(1) rotate(0deg);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
@@ -124,21 +142,28 @@ Zooming
 */
 
 /* vars */
-body.bricks-is-frontend .vpa-big-zoom-in {
+.vpa-big-zoom-in {
+    --delay: 0s;
+    --opacity-start: 0;
+    --opacity-end: 1;
+    --opacity-duration: 0.5s;
     --scale-start: 0.1;
     --scale-end: 30;
+    --transform-duration-in: 0.5s;
+    --transform-duration-out: 1s;
+    --transition-timing: ease-out;
 }
 
 
 /*start*/
-body.bricks-is-frontend .vpa-big-zoom-in > *:first-child {
+.vpa-big-zoom-in > *:first-child {
     transform: scale(var(--scale-start));
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration) ease, transform var(--transform-duration-out) var(--transition-timing);
 }
 
 /*end*/
-body.bricks-is-frontend .vpa-big-zoom-in.vpa-initalized.in-view > *:first-child {
+.vpa-big-zoom-in.vpa-initalized.in-view > *:first-child {
     transform: scale(var(--scale-end));
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
@@ -150,36 +175,50 @@ Clip Reveals
 
 /* right to left */
 
-body.bricks-is-frontend .vpa-reveal-clip-to-left {
+.vpa-reveal-clip-to-left {
+    --delay: 0s;
+    --opacity-start: 0.1;
+    --opacity-end: 1;
+    --opacity-duration: 0.5s;
     --percent-start: 95%;
     --percent-end: 0%;
+    --transform-duration-in: 0.5s;
+    --transform-duration-out: 1s;
+    --transition-timing: ease-out;
 }
 
-body.bricks-is-frontend .vpa-reveal-clip-to-left > *:first-child {
+.vpa-reveal-clip-to-left > *:first-child {
     clip-path: polygon(var(--percent-start) var(--percent-end), 100% var(--percent-end), 100% 100%, var(--percent-start) 100%);
     opacity: var(--opacity-start);
     transition: opacity var(--opacity-duration), clip-path var(--transform-duration-out), transform var(--transform-duration-out) var(--transition-timing);
 }
 
-body.bricks-is-frontend .vpa-reveal-clip-to-left.vpa-initalized.in-view > *:first-child {
+.vpa-reveal-clip-to-left.vpa-initalized.in-view > *:first-child {
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     opacity: var(--opacity-end);
-    transition: opacity var(--opacity-duration) ease var(--delay), clip-path var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-out) var(--transition-timing);
+    transition: opacity var(--opacity-duration) ease var(--delay), clip-path var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-out) var(--transition-timing);;
 }
 
 /* left to right */
-body.bricks-is-frontend .vpa-reveal-clip-to-right {
+.vpa-reveal-clip-to-right {
+    --delay: 0s;
+    --opacity-start: 0;
+    --opacity-end: 1;
+    --opacity-duration: 0.5s;
     --percent-start: 5%;
     --percent-end: 100%;
+    --transform-duration-in: 0.5s;
+    --transform-duration-out: 1s;
+    --transition-timing: ease-out;
 }
 
-body.bricks-is-frontend .vpa-reveal-clip-to-right > *:first-child {
+.vpa-reveal-clip-to-right > *:first-child {
     clip-path: polygon(0% 0%, var(--percent-start) 0%, var(--percent-start) 100%, 0% 100%);
     opacity: 0.1;
     transition: opacity var(--opacity-duration), clip-path var(--transform-duration-out), transform var(--transform-duration-out) var(--transition-timing);;
 }
 
-body.bricks-is-frontend .vpa-reveal-clip-to-right.vpa-initalized.in-view > *:first-child {
+.vpa-reveal-clip-to-right.vpa-initalized.in-view > *:first-child {
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     opacity: var(--opacity-end);
     transition: opacity var(--opacity-duration) ease var(--delay), clip-path var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-out) var(--transition-timing);
@@ -188,22 +227,26 @@ body.bricks-is-frontend .vpa-reveal-clip-to-right.vpa-initalized.in-view > *:fir
 /**-------------------
 Underlines
 */
-body.bricks-is-frontend .vpa-underline > *:first-child{
+.vpa-underline > *:first-child{
+    --delay: 0s;
     --bg-color: rgba(255,0,0,.6);
     --border-radius: 3px;
     --height: 0.3rem;
     --bottom: 0;
     --rotation: 1deg;
     --display: inline-block;
+    --transform-duration-in: .6s;
+    --transform-duration-out: 0.3s;
+    --transition-timing: ease-out;
     isolation: isolate; /* reset for z-index */
 }
-body.bricks-is-frontend .vpa-underline > *:first-child{
+body:not(.elementor-editor-active) .vpa-underline > *:first-child{
     display: var(--display);
     padding: var(--padding);
     position: relative;
 }
 
-body.bricks-is-frontend .vpa-underline > *:first-child:before{
+body:not(.elementor-editor-active) .vpa-underline > *:first-child:before{
     content: '';
     position: absolute;
     bottom: var(--bottom);
@@ -218,7 +261,7 @@ body.bricks-is-frontend .vpa-underline > *:first-child:before{
 
 }
 
-body.bricks-is-frontend .vpa-underline.vpa-initalized.in-view  > *:first-child:before{
+body:not(.elementor-editor-active) .vpa-underline.vpa-initalized.in-view  > *:first-child:before{
     width: 100%;
     transition: width var(--transform-duration-in) var(--transition-timing) var(--delay);
 }
@@ -226,7 +269,8 @@ body.bricks-is-frontend .vpa-underline.vpa-initalized.in-view  > *:first-child:b
 /**-------------------
 Highlighters
 */
-body.bricks-is-frontend .vpa-highlighter > *:first-child{
+.vpa-highlighter > *:first-child{
+    --delay: 0s;
     --box-shadow-in: 2px 2px 6px #00000055;
     --box-shadow-out: none;
     --bg-color: rgba(255,0,0,.6);
@@ -234,15 +278,18 @@ body.bricks-is-frontend .vpa-highlighter > *:first-child{
     --padding: 10px;
     --rotation: 1deg;
     --display: inline-block;
+    --transform-duration-in: .6s;
+    --transform-duration-out: 0.3s;
+    --transition-timing: ease-out;
     isolation: isolate; /* reset for z-index */
 }
-body.bricks-is-frontend .vpa-highlighter > *:first-child{
+body:not(.elementor-editor-active) .vpa-highlighter > *:first-child{
     display: var(--display);
     padding: var(--padding);
     position: relative;
 }
 
-body.bricks-is-frontend .vpa-highlighter > *:first-child:before{
+body:not(.elementor-editor-active) .vpa-highlighter > *:first-child:before{
     content: '';
     position: absolute;
     top:0;
@@ -257,7 +304,7 @@ body.bricks-is-frontend .vpa-highlighter > *:first-child:before{
     border-radius: var(--border-radius);
 }
 
-body.bricks-is-frontend .vpa-highlighter.vpa-initalized.in-view  > *:first-child:before{
+body:not(.elementor-editor-active) .vpa-highlighter.vpa-initalized.in-view  > *:first-child:before{
     width: 100%;
     box-shadow: var(--box-shadow-in);
     transition: width var(--transform-duration-in) var(--transition-timing) var(--delay);
@@ -266,15 +313,19 @@ body.bricks-is-frontend .vpa-highlighter.vpa-initalized.in-view  > *:first-child
 /**-------------------
 Background Box Reveal
 */
-body.bricks-is-frontend .vpa-box-reveal > *:first-child{
+body:not(.elementor-editor-active) .vpa-box-reveal > *:first-child{
+    --delay: 0s;
     --bg-color: rgba(255,0,0,.6);
     --border-radius: 5px;
     --padding: 10px;
     --rotation: 1deg;
     --display: inline-block;
+    --transform-duration-in: .6s;
+    --transform-duration-out: 0.3s;
+    --transition-timing: ease-out;
     isolation: isolate; /* reset for z-index */
 }
-body.bricks-is-frontend .vpa-box-reveal > *:first-child{
+body:not(.elementor-editor-active) .vpa-box-reveal > *:first-child{
     display: var(--display);
     padding: var(--padding);
     position: relative;
@@ -295,21 +346,25 @@ body.bricks-is-frontend .vpa-box-reveal > *:first-child{
 /**-------------------
 Shadows
 */
-body.bricks-is-frontend .vpa-shadow-standoff {
+.vpa-shadow-standoff {
+    --delay: 0;
     --distance: 30px;
+    --transform-duration-in: 1s;
+    --transform-duration-out: 0.5s;
+    --transition-timing: ease-out;
     --neg-dist: calc(-1 * var(--distance));
     --half-dist: calc(distance / 2);
     --box-shadow-off: 0 0 3px #00000033;
     --box-shadow-on: var(--half-dist) var(--half-dist) var(--half-dist) #00000066;
 }
 
-body.bricks-is-frontend .vpa-shadow-standoff {
+.vpa-shadow-standoff {
     box-shadow: var(--box-shadow-off);
     transform: translateX(0) translateY(0);
     transition: box-shadow var(--transform-duration-out), transform var(--transform-duration-out);
 }
 
-body.bricks-is-frontend .vpa-shadow-standoff.vpa-initalized.in-view {
+.vpa-shadow-standoff.vpa-initalized.in-view {
     box-shadow: var(--box-shadow-on);
     transform: translateX(var(--neg-dist)) translateY(var(--neg-dist));
     transition: box-shadow var(--transform-duration-in) var(--transition-timing) var(--delay), transform var(--transform-duration-in) var(--transition-timing) var(--delay);
@@ -324,7 +379,11 @@ Keyframe Classes
 Example
 */
 .vpa-keyframe-sample {
+    --delay: 0;
     --distance: 100px;
+    --transform-duration-in: 1s;
+    --transform-duration-out: 0.5s;
+    --transition-timing: ease-out;
     --opacity-start: 0;
     --opacity-end: 1;
 }

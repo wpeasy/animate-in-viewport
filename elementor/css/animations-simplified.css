@@ -1,0 +1,243 @@
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Animation classes for "Animate in Viewport"
+prefix all names with "vpa-" for consistency
+
+For any classes like :first-child :before :after - These may affect teh Elementor Editor
+Prefix thode rules with body:not(.elementor-editor-active) to exclude from the Editor
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/*General hide animation items until initialised */
+.vpa-track:not(.vpa-initalized),  .vpa-no-track:not(.vpa-initalized){
+    opacity: 0;
+}
+
+/** For Elementor Editor, unset all opacity and transformations */
+body.elementor-editor-active .vpa-track:not(.vpa-initalized), body.elementor-editor-active .vpa-no-track:not(.vpa-initalized)  {
+    opacity: 1;
+    transform: none;
+    clip-path: unset;
+}
+
+.vpa-track, .vpa-no-track{
+    --out-delay: 0s;
+    --in-delay: 0s;
+    --transform-origin: 50% 50%;
+
+    /* Transforms */
+    --out-rotation: 0deg;
+    --in-rotation: 0deg;
+    --out-x-distance: 0;
+    --in-x-distance: 0;
+    --out-y-distance: 0;
+    --in-y-distance: 0;
+    --out-skew: 0;
+    --in-skew: 0;
+    --out-x-scale: 1;
+    --in-x-scale: 1;
+    --out-y-scale: 1;
+    --in-y-scale: 1;
+
+    --out-transform-duration: 0.7s;
+    --in-transform-duration: 0.5s;
+    --out-transition-timing: ease-out;
+    --in-transition-timing: ease-in;
+
+    /* Opacity */
+    --out-opacity: 0;
+    --in-opacity: 1;
+    --out-opacity-duration: 0.5s;
+    --in-opacity-duration: 0.5s;
+    --out-opacity-timing: ease-in;
+    --in-opacity-timing: ease-out;
+}
+
+.vpa-track > *:first-child, .vpa-no-track > *:first-child{
+    transform-origin: var(--transform-origin);
+    transform: translateX(var(--out-x-distance)) translateY(var(--out-y-distance)) rotate(var(--out-rotation)) skew(var(--out-skew)) scaleX(var(--out-x-scale)) scaleY(var(--out-y-scale));
+    opacity: var(--out-opacity);
+    transition: opacity var(--out-opacity-duration) var(--out-opacity-timing) var(--out-delay), transform var(--out-transform-duration) var(--out-transition-timing) var(--out-delay), clip-path var(--out-transform-duration) var(--out-transition-timing) var(--out-delay), box-shadow var(--out-transform-duration) var(--out-transition-timing) var(--out-delay);;
+}
+.vpa-track.in-view > *:first-child , .vpa-track.in-view > *:first-child{
+    transform: translateX(var(--in-x-distance)) translateY(var(--in-y-distance)) rotate(var(--in-rotation)) skew(var(--in-skew)) scaleX(var(--in-x-scale)) scaleY(var(--in-y-scale));
+    opacity: var(--in-opacity);
+    transition: opacity var(--in-opacity-duration) var(--in-opacity-timing) var(--in-delay), transform var(--in-transform-duration) var(--in-transition-timing) var(--in-delay), clip-path var(--in-transform-duration) var(--in-transition-timing) var(--in-delay), box-shadow var(--in-transform-duration) var(--in-transition-timing) var(--in-delay);
+}
+/*#########################
+Transition Classes
+ */
+/**-------------------
+SIMPLE
+*/
+/* vars */
+.vpa-slide-fade > *:first-child {
+    /* OVERRIDES */
+    --out-y-distance: 30px;
+}
+
+
+/* vars */
+.vpa-rotate > *:first-child {
+    /* OVERRIDES */
+    --out-rotation: 8deg;
+    --in-rotation: 0deg;
+    --transform-origin: 0 0;
+}
+
+.vpa-zoom  > *:first-child{
+    --out-x-scale: 0.1;
+    --in-x-scale: 10;
+    --out-y-scale: 0.1;
+    --in-y-scale: 10;
+}
+
+
+/**-------------------
+Clip Reveals
+*/
+
+/* right to left */
+
+.vpa-clip-reveal{
+    --out-top-left: 95% 0;
+    --out-top-right: 100% 0;
+    --out-bottom-right: 100% 100%;
+    --out-bottom-left: 95% 100%;
+
+    --in-top-left: 0 0;
+    --in-top-right: 100% 0;
+    --in-bottom-right: 100% 100%;
+    --in-bottom-left: 0 100%;
+
+    /* Overrides */
+    --out-opacity: 1;
+}
+
+.vpa-clip-reveal > *:first-child {
+    clip-path: polygon( var(--out-top-left), var(--out-top-right), var(--out-bottom-right), var(--out-bottom-left));
+}
+
+.vpa-clip-reveal.in-view > *:first-child {
+    clip-path: polygon( var(--in-top-left), var(--in-top-right), var(--in-bottom-right), var(--in-bottom-left));
+}
+
+
+/**-------------------
+Underlines
+*/
+.vpa-underline > *:first-child{
+    --bg-color: rgba(255,0,0,.6);
+    --border-radius: 3px;
+    --height: 0.3rem;
+    --bottom: 0;
+    --display: inline-block;
+    isolation: isolate; /* reset for z-index */
+
+    /* Specify differnt rotation var as we are not rotating the element, just :before */
+    --out-inner-rotation: 1deg;
+    --in-inner-rotation: 1deg;
+
+    /*Overrides */
+    --out-opacity: .5;
+    --in-opacity: 1;
+}
+/* prevent breaking in Elementor editor */
+body:not(.elementor-editor-active) .vpa-underline > *:first-child{
+    display: var(--display);
+    padding: var(--padding);
+    position: relative;
+}
+
+body:not(.elementor-editor-active) .vpa-underline > *:first-child:before{
+    content: '';
+    position: absolute;
+    bottom: var(--bottom);
+    left:0;
+    width: 0%;
+    border-radius: var(--border-radius);
+    height: var(--height);
+    background: var(--bg-color);
+    transform: rotate(var(--out-inner-rotation));
+    transition:  width var(--out-transform-duration) var(--out-transition-timing) var(--out-delay);
+    z-index: -1;
+
+}
+
+body:not(.elementor-editor-active) .vpa-underline.in-view  > *:first-child:before{
+    width: 100%;
+    transform: rotate(var(--in-inner-rotation));
+    transition:  width var(--in-transform-duration) var(--in-transition-timing) var(--in-delay);
+}
+
+/**-------------------
+Highlighters
+*/
+.vpa-highlighter > *:first-child{
+    --bg-color: rgba(255,0,0,.6);
+    --border-radius: 3px;
+    --height: 0.3rem;
+    --bottom: 0;
+    --display: inline-block;
+    --box-shadow-in: 2px 2px 6px #00000055;
+    --box-shadow-out: none;
+    --padding: 10px;
+    isolation: isolate; /* reset for z-index */
+
+    /* Specify differnt rotation var as we are not rotating the element, just :before */
+    --out-inner-rotation: 1deg;
+    --in-inner-rotation: 1deg;
+
+    /*Overrides */
+    --out-opacity: .5;
+    --in-opacity: 1;
+}
+body:not(.elementor-editor-active) .vpa-highlighter > *:first-child{
+    display: var(--display);
+    padding: var(--padding);
+    position: relative;
+}
+
+body:not(.elementor-editor-active) .vpa-highlighter > *:first-child:before{
+    content: '';
+    position: absolute;
+    top:0;
+    left:0;
+    width: 0%;
+    height: 100%;
+    background: var(--bg-color);
+    box-shadow: var(--box-shadow-out);
+    transform: rotate(var(--out-inner-rotation));
+    transition:  width var(--out-transform-duration) var(--out-transition-timing),  box-shadow 0.1s;
+    border-radius: var(--border-radius);
+    z-index: -1;
+}
+
+body:not(.elementor-editor-active) .vpa-highlighter.in-view  > *:first-child:before{
+    width: 100%;
+    box-shadow: var(--box-shadow-in);
+    transform: rotate(var(--out-inner-rotation));
+    transition:  width var(--in-transform-duration) ;
+}
+
+
+
+/**-------------------
+Shadows
+*/
+.vpa-shadow-standoff > *:first-child{
+    /* Overrides */
+    --in-x-distance: -20px;
+    --in-y-distance: -20px;
+
+    --neg-x-dist: calc(-1 * var(--in-x-distance));
+    --neg-y-dist: calc(-1 * var(--in-y-distance));
+    --out-box-shadow: 0 0 3px #00000033;
+    --in-box-shadow: var(--neg-x-dist) var(--neg-y-dist)  20px #00000022;
+}
+
+.vpa-shadow-standoff > *:first-child{
+    box-shadow: var(--out-box-shadow);
+}
+
+.vpa-shadow-standoff.in-view > *:first-child{
+    box-shadow: var(--in-box-shadow);
+}

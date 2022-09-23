@@ -16,7 +16,7 @@ https://youtu.be/0HQ8DaamOVI
 #### Bricks
 Example: https://youtu.be/O6jr_ueA164
 
-**NOTE: My code had changed quite a bit since these videos. They need tobe redone but still demonstrate the usage.** 
+**NOTE: My code may have changed since these videos. They need to be redone but still demonstrate the usage.** 
 
 ## Usage
 ### Element Viewport Tracking
@@ -64,15 +64,36 @@ For Elementor, use Settings->Advanced > "Attributes". Use the attribute "style" 
 E.g. style| --delay: 1s; --scale-start: 0.1
 
 CSS attributes are dependent on how the CSS if defined. Common CSS attributes include:
-- --delay
-- --opacity-start
-- --opacity-end
-- --opacity-duration
-- --scale-start
-- --rotate-start
-- --transform-duration-in
-- --transform-duration-out
-- --transition-timing
+--out-delay: 0s;
+--in-delay: 0s;
+--transform-origin: 50% 50%;
+
+    /* Transforms */
+    --out-rotation: 0deg;
+    --in-rotation: 0deg;
+    --out-x-distance: 0;
+    --in-x-distance: 0;
+    --out-y-distance: 0;
+    --in-y-distance: 0;
+    --out-skew: 0;
+    --in-skew: 0;
+    --out-x-scale: 1;
+    --in-x-scale: 1;
+    --out-y-scale: 1;
+    --in-y-scale: 1;
+    
+    --out-transform-duration: 0.7s;
+    --in-transform-duration: 0.5s;
+    --out-transition-timing: ease-out;
+    --in-transition-timing: ease-in;
+
+    /* Opacity */
+    --out-opacity: 0;
+    --in-opacity: 1;
+    --out-opacity-duration: 0.5s;
+    --in-opacity-duration: 0.5s;
+    --out-opacity-timing: ease-in;
+    --in-opacity-timing: ease-out;
 
 **Note:** All attributes set here are automatically copied to the First Child Element. The reason being that the style does not have inheritance.
 Animation classes are applied to the First Child of the tracked Element.

@@ -127,7 +127,6 @@ NOTE: Requires Breakpoint CSS and Breakpoint JS
             element.classList.add(inViewClass);
             element.classList.remove(outOfViewClass);
         }
-
     }
 
     const setOutOfView = (element, entry) => {
